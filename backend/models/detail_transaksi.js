@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     id_transaksi: DataTypes.INTEGER(11),
     id_menu: DataTypes.INTEGER(11),
-    harga: DataTypes.INTEGER(11)
+    qty: DataTypes.INTEGER(11),
+    subtotal: DataTypes.INTEGER(11),
   }, {
     sequelize,
     modelName: 'detail_transaksi',

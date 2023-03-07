@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const model = require('../models/index');
 const User = model.user
 
-//endpoint menampilkan semua data user, method: GET, function: findAll()
 app.post('/', async (req, res) => {
     const schema = {
         username: req.body.username,

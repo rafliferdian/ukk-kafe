@@ -45,7 +45,7 @@ export default function EditUser() {
         setPrevData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
-    //post data ke database
+    //input data ke database
     const handleClick = async e => {
         e.preventDefault()
         if (prevData.username !== lastUsername && checkUsername.includes(prevData.username.trim())) {

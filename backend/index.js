@@ -20,6 +20,8 @@ const meja = require('./routes/meja');
 app.use("/meja", meja)
 const Login = require('./routes/login');
 app.use("/login", Login)
+const transaksi = require('./routes/transaksi');
+app.use("/transaksi", transaksi)
 
 //run server
 app.listen(8080, () => {

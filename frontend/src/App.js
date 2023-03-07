@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-// import LayoutKasir from './component/shared/LayoutKasir';
-// import Menu from './component/kasir/Menu';
 
 import Login from './component/Login';
 import NotFound from './component/NotFound';
@@ -12,12 +10,21 @@ import AddUser from './component/admin/user/AddUser';
 import EditUser from './component/admin/user/EditUser';
 import Menu from './component/admin/menu/Menu';
 import AddMenu from './component/admin/menu/AddMenu';
-import Meja from './component/admin/meja/Meja';
 import EditMenu from './component/admin/menu/EditMenu';
+import Meja from './component/admin/meja/Meja';
 
+//kasir pages
+import LayoutKasir from './component/shared/LayoutKasir';
+import Pemesanan from './component/kasir/Pemesanan';
+import Riwayat from './component/kasir/Riwayat'
+
+//manager pages
+import LayoutManager from './component/shared/LayoutManager'
+import Chart from './component/manager/Chart'
+import DataTransaksi from './component/manager/DataTransaksi';
 
 function App() {
-  if (sessionStorage.getItem('logged') != "true") {
+  if (sessionStorage.getItem('logged') !== "true") {
     return (
       <Router>
         <Routes>
@@ -26,7 +33,7 @@ function App() {
         </Routes>
       </Router>
     )
-  } else if (sessionStorage.getItem('logged') == "true" && sessionStorage.getItem('role') == "admin") {
+  } else if (sessionStorage.getItem('logged') === "true" && sessionStorage.getItem('role') === "admin") {
     //Pages role admin
     return (
       <Router>
@@ -44,7 +51,33 @@ function App() {
           </Route>
           <Route path='*' element={<NotFound />} />
         </Routes>
-
+      </Router>
+    )
+  } else if (sessionStorage.getItem('logged') === "true" && sessionStorage.getItem('role') === "kasir") {
+    //Pages role kasir
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<LayoutKasir />}>
+            <Route index element={<Pemesanan />} />
+            <Route path="/riwayat" element={<Riwayat />} />
+          </Route>
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </Router>
+    )
+  } else if (sessionStorage.getItem('logged') === "true" && sessionStorage.getItem('role') === "manager") {
+    //Pages role manager
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<LayoutManager />}>
+            <Route index element={<Chart />} />
+            <Route path="/data_transaksi" element={<DataTransaksi />} />
+            {/* <Route path="/tes_123" element={<Tes />} /> */}
+          </Route>
+          <Route path='*' element={<NotFound />} />
+        </Routes>
       </Router>
     )
   }

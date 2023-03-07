@@ -19,7 +19,7 @@ export default function EditMenu() {
 
     //mengambil menu untuk verifikasi
     useEffect(() => {
-        //mengambil username untuk verifikasi
+        //mengambil nama menu untuk verifikasi
         const getMenu = async () => {
             try {
                 const response = await axios.get("http://localhost:8080/menu/")
