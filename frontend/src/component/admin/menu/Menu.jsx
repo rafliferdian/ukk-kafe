@@ -7,6 +7,10 @@ function splitPath(path) {
 }
 
 export default function Menu() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
+
     const [menu, setMenu] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [pickId, setPickId] = useState("")
@@ -14,7 +18,7 @@ export default function Menu() {
     useEffect(() => {
         const fecthAllMenu = async () => {
             try {
-                const res = await axios.get("http://localhost:8080/menu/")
+                const res = await axios.get("http://localhost:8080/menu/", {headers})
                 console.log(res)
                 setMenu(res.data.menu)
             } catch (err) {
@@ -33,7 +37,7 @@ export default function Menu() {
     //menghapus id
     const deleteId = async () => {
         try {
-            await axios.delete("http://localhost:8080/menu/" + pickId)
+            await axios.delete("http://localhost:8080/menu/" + pickId, {headers})
             window.location.reload()
         } catch (err) {
             console.log(err)

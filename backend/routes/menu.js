@@ -50,7 +50,7 @@ let upload = multer({
     },
 })
 
-app.get("/", (req, res) => {
+app.get("/", auth, (req, res) => {
     menu.findAll()
         .then(result => {
             res.json({
@@ -65,7 +65,7 @@ app.get("/", (req, res) => {
 })
 
 //endpoint untuk melihat menu berdasarkan id
-app.get("/:id_menu", (req, res) => {
+app.get("/:id_menu", auth, (req, res) => {
     let param = { id_menu: req.params.id_menu }
 
     menu.findOne({ where: param })
@@ -82,7 +82,7 @@ app.get("/:id_menu", (req, res) => {
 })
 
 //endpoint untuk menyimpan data menu, METHOD: POST, function: create
-app.post("/", upload.single("gambar"), (req, res) => {
+app.post("/", upload.single("gambar"), auth, (req, res) => {
 
     if (!req.file) {
         res.json({
@@ -111,7 +111,7 @@ app.post("/", upload.single("gambar"), (req, res) => {
     }
 })
 
-app.put("/:id_menu", upload.single("gambar"), (req, res) => {
+app.put("/:id_menu", upload.single("gambar"), auth, (req, res) => {
     let param = { id_menu: req.params.id_menu }
     let data = {
         nama_menu: req.body.nama_menu,
@@ -154,7 +154,7 @@ app.put("/:id_menu", upload.single("gambar"), (req, res) => {
         })
 })
 
-app.delete("/:id_menu", async (req, res) => {
+app.delete("/:id_menu",auth, async (req, res) => {
     try {
         let param = { id_menu: req.params.id_menu }
         let result = await menu.findOne({ where: param })

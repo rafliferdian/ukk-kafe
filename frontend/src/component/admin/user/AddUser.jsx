@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 export default function AddUser() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
+
     const navigate = useNavigate()
     const [checkUsername, setCheckUsername] = useState([])
 
@@ -13,7 +18,7 @@ export default function AddUser() {
     useEffect(() => {
         const getUsername = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/user/")
+                const response = await axios.get("http://localhost:8080/user/", {headers})
                 const username = response.data.user.map(res => res.username)
                 setCheckUsername(username)
             } catch (err) {
@@ -42,7 +47,7 @@ export default function AddUser() {
             toast.info("Username sudah terdaftar");
         } else {
             try {
-                await axios.post("http://localhost:8080/user/", addUser)
+                await axios.post("http://localhost:8080/user/", addUser, {headers})
                 navigate("/")
             } catch (err) {
                 console.log(err)

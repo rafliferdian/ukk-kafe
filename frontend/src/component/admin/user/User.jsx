@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Menu() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
+
     const [user, setUser] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [pickId, setPickId] = useState("")
@@ -10,7 +14,7 @@ export default function Menu() {
     useEffect(() => {
         const fecthAllUser = async () => {
             try {
-                const res = await axios.get("http://localhost:8080/user/")
+                const res = await axios.get("http://localhost:8080/user/", {headers})
                 // console.log(res)
                 setUser(res.data.user)
             } catch (err) {
@@ -29,7 +33,7 @@ export default function Menu() {
     //menghapus id
     const deleteId = async () => {
         try {
-            await axios.delete("http://localhost:8080/user/" + pickId)
+            await axios.delete("http://localhost:8080/user/" + pickId, {headers})
             window.location.reload()
         } catch (err) {
             console.log(err)

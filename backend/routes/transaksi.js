@@ -7,12 +7,10 @@ app.use(express.json())
 const models = require("../models/index")
 const transaksi = models.transaksi
 const detail_transaksi = models.detail_transaksi
-const user = models.user
-const meja = models.meja
-const menu = models.menu
+const auth = require("../auth")
 
 //Endpoint untuk menampilkan semua data transaksi
-app.get("/", async (req, res) => {
+app.get("/", auth, async (req, res) => {
     let result = await transaksi.findAll({
         include: [
             "user", "meja",
@@ -31,7 +29,7 @@ app.get("/", async (req, res) => {
 
 
 //endpoint untuk menampilkan data transaksi berdasarkan id
-app.get("/byTransaksi/:id_transaksi", async (req, res) => {
+app.get("/byTransaksi/:id_transaksi", auth, async (req, res) => {
     let param = { id_transaksi: req.params.id_transaksi }
     let result = await transaksi.findOne({
         where: param,
@@ -48,7 +46,7 @@ app.get("/byTransaksi/:id_transaksi", async (req, res) => {
 })
 
 //endpoint untuk menampilkan data transaksi berdasarkan id user
-app.get("/byUser/:id_user", async (req, res) => {
+app.get("/byUser/:id_user", auth, async (req, res) => {
     let param = { id_user: req.params.id_user }
     let result = await transaksi.findAll({
         where: param,
@@ -70,7 +68,7 @@ app.get("/byUser/:id_user", async (req, res) => {
 
 
 //endpoint untuk menambahkan data transaksi baru
-app.post("/", async (req, res) => {
+app.post("/", auth, async (req, res) => {
     let current = new Date().toISOString().split('T')[0]
     let data = {
         id_user: req.body.id_user,
@@ -173,7 +171,7 @@ app.put("/:id_transaksi", async (req, res) => {
 
 
 // endpoint untuk menghapus data transaksi
-app.delete("/:id_transaksi", async (req, res) => {
+app.delete("/:id_transaksi", auth, async (req, res) => {
     let param = { id_transaksi: req.params.id_transaksi }
     try {
         await detail_transaksi.destroy({ where: param })

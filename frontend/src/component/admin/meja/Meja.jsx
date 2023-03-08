@@ -7,6 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Meja() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
     const [meja, setMeja] = useState([]);
 
     const [checkNomor, setCheckNomor] = useState([])
@@ -32,7 +35,7 @@ export default function Meja() {
     useEffect(() => {
         const fecthAllMeja = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/meja/")
+                const response = await axios.get("http://localhost:8080/meja/", {headers})
                 setMeja(response.data.meja)
 
                 const nomor = response.data.meja.map(res => res.nomor_meja)
@@ -54,7 +57,7 @@ export default function Meja() {
     //menghapus id
     const deleteId = async () => {
         try {
-            await axios.delete("http://localhost:8080/meja/" + pickId)
+            await axios.delete("http://localhost:8080/meja/" + pickId, {headers})
             window.location.reload()
         } catch (err) {
             console.log(err)
@@ -87,7 +90,7 @@ export default function Meja() {
             toast.info("Nomor meja sudah terdaftar");
         } else {
             try {
-                await axios.post("http://localhost:8080/meja/", addMeja)
+                await axios.post("http://localhost:8080/meja/", addMeja, {headers})
                 window.location.reload()
             } catch (err) {
                 console.log(err)
@@ -101,7 +104,7 @@ export default function Meja() {
             toast.info("Nomor meja sudah terdaftar");
         } else {
             try {
-                await axios.put("http://localhost:8080/meja/" + pickId, prevData)
+                await axios.put("http://localhost:8080/meja/" + pickId, prevData, {headers})
                 window.location.reload()
             } catch (err) {
                 console.log(err)

@@ -6,6 +6,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function EditMenu() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -22,7 +25,7 @@ export default function EditMenu() {
         //mengambil nama menu untuk verifikasi
         const getMenu = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/menu/")
+                const response = await axios.get("http://localhost:8080/menu/", {headers})
                 const nama = response.data.menu.map(res => res.nama_menu)
                 setCheckMenu(nama)
             } catch (err) {
@@ -32,7 +35,7 @@ export default function EditMenu() {
         //mengambil data yang akan di update
         const getDataFromId = async () => {
             try {
-                const res = await axios.get("http://localhost:8080/menu/" + idMenu)
+                const res = await axios.get("http://localhost:8080/menu/" + idMenu, {headers})
                 setPrevData(res.data.data)
                 setLastMenuName(res.data.data.nama_menu)
             } catch (err) {
@@ -63,7 +66,7 @@ export default function EditMenu() {
             data.append('deskripsi', prevData.deskripsi)
             data.append('gambar', selectImage)
             data.append('harga', prevData.harga)
-            await axios.put("http://localhost:8080/menu/" + idMenu, data)
+            await axios.put("http://localhost:8080/menu/" + idMenu, data, {headers})
             navigate("/menu")
         }
     }

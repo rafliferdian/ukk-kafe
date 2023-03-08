@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Riwayat() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
     const [transaksi, setTransaksi] = useState([])
     const [meja, setMeja] = useState([])
     useEffect(() => {
         const fecthDatas = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/transaksi/")
+                const response = await axios.get("http://localhost:8080/transaksi/", {headers})
                 setTransaksi(response.data.transaksi)
 
-                const res = await axios.get("http://localhost:8080/meja/")
+                const res = await axios.get("http://localhost:8080/meja/", {headers})
                 setMeja(res.data.meja)
             } catch (err) {
                 console.log(err)
@@ -33,8 +36,8 @@ export default function Riwayat() {
         }
 
         try {
-            await axios.put("http://localhost:8080/transaksi/" + id_transaksi, updatedStatusTransaksi);
-            await axios.put("http://localhost:8080/meja/" + selectedMeja.id_meja, updatedStatusMeja)
+            await axios.put("http://localhost:8080/transaksi/" + id_transaksi, updatedStatusTransaksi, {headers});
+            await axios.put("http://localhost:8080/meja/" + selectedMeja.id_meja, updatedStatusMeja, {headers})
             window.location.reload()
         } catch (error) {
             console.error(error);
@@ -51,8 +54,8 @@ export default function Riwayat() {
                 status: "tersedia"
             }
 
-            await axios.delete("http://localhost:8080/transaksi/" + id_transaksi);
-            await axios.put("http://localhost:8080/meja/" + selectedMeja.id_meja, updatedStatusMeja)
+            await axios.delete("http://localhost:8080/transaksi/" + id_transaksi, {headers});
+            await axios.put("http://localhost:8080/meja/" + selectedMeja.id_meja, updatedStatusMeja, {headers})
             window.location.reload()
         } catch (error) {
             console.error(error);

@@ -7,16 +7,19 @@ ChartJS.register(
     BarElement, CategoryScale, LinearScale, Tooltip, Legend
 )
 export default function ChartTransaksi() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
     const [transaksi, setTransaksi] = useState([])
     const [menu, setMenu] = useState([])
 
     useEffect(() => {
         const fecthDatas = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/transaksi/")
+                const response = await axios.get("http://localhost:8080/transaksi/", {headers})
                 setTransaksi((response.data.transaksi).filter((select) => select.status === "lunas"))
 
-                const res = await axios.get("http://localhost:8080/menu/")
+                const res = await axios.get("http://localhost:8080/menu/", {headers})
                 setMenu(res.data.menu)
             } catch (err) {
                 console.log(err)

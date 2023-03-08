@@ -6,6 +6,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function EditUser() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
+
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -20,7 +24,7 @@ export default function EditUser() {
         //mengambil username untuk verifikasi
         const getUsername = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/user/")
+                const response = await axios.get("http://localhost:8080/user/", {headers})
                 const username = response.data.user.map(res => res.username)
                 setCheckUsername(username)
             } catch (err) {
@@ -30,7 +34,8 @@ export default function EditUser() {
         //mengambil data yang akan di update
         const getDataFromId = async () => {
             try {
-                const res = await axios.get("http://localhost:8080/user/" + idUser)
+                const res = await axios.get("http://localhost:8080/user/" + idUser, {headers})
+                res.data.data.password = ""
                 setPrevData(res.data.data)
                 setLastUsername(res.data.data.username)
             } catch (err) {
@@ -48,13 +53,14 @@ export default function EditUser() {
     //input data ke database
     const handleClick = async e => {
         e.preventDefault()
+
         if (prevData.username !== lastUsername && checkUsername.includes(prevData.username.trim())) {
             toast.info("Username sudah terdaftar");
         } else if (prevData.password === "") {
             toast.error("Password kosong!");
         } else {
             try {
-                await axios.put("http://localhost:8080/user/" + idUser, prevData)
+                await axios.put("http://localhost:8080/user/" + idUser, prevData, {headers})
                 navigate("/")
             } catch (err) {
                 console.log(err)
@@ -92,7 +98,7 @@ export default function EditUser() {
                             </div>
                             <div>
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-white">Password</label>
-                                <input type="password" id="password" className="text-sm rounded-lg block w-full p-2.5   bg-gray-700   border-gray-600   placeholder-gray-400   text-white   focus:ring-blue-500   focus:border-blue-500" name="password" onChange={handleChange} autoComplete="off" />
+                                <input type="password" id="password" className="text-sm rounded-lg block w-full p-2.5   bg-gray-700   border-gray-600   placeholder-gray-400   text-white   focus:ring-blue-500   focus:border-blue-500"  name="password" onChange={handleChange} autoComplete="off" />
                             </div>
                         </div>
                         <div>

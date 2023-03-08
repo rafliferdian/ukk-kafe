@@ -11,6 +11,10 @@ function splitPath(path) {
 }
 
 export default function Pemesanan() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
+
     const navigate = useNavigate()
     const [menu, setMenu] = useState([])
     const [showModal, setShowModal] = useState(false)
@@ -30,11 +34,11 @@ export default function Pemesanan() {
     useEffect(() => {
         const fecthDatas = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/menu/")
+                const response = await axios.get("http://localhost:8080/menu/", {headers})
                 const qty = response.data.menu.map(res => res.qty = 0)
                 setMenu(response.data.menu, qty)
 
-                const responseMeja = await axios.get("http://localhost:8080/meja/")
+                const responseMeja = await axios.get("http://localhost:8080/meja/", {headers})
                 setMeja(responseMeja.data.meja)
 
             } catch (err) {
@@ -133,8 +137,8 @@ export default function Pemesanan() {
         }
 
         try {
-            await axios.post("http://localhost:8080/transaksi/", data_transaksi);
-            await axios.put("http://localhost:8080/meja/" + selectedOption.id_meja, updatedStatusMeja)
+            await axios.post("http://localhost:8080/transaksi/", data_transaksi, {headers});
+            await axios.put("http://localhost:8080/meja/" + selectedOption.id_meja, updatedStatusMeja, {headers})
             navigate('/riwayat')
         } catch (error) {
             console.error(error);

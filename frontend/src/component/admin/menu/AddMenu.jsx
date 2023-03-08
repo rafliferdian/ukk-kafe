@@ -6,6 +6,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddMenu() {
+    const headers = {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    };
     const navigate = useNavigate()
     const [checkMenu, setCheckMenu] = useState([])
     const [selectImage, setSelectImage] = useState(null)
@@ -14,7 +17,7 @@ export default function AddMenu() {
     useEffect(() => {
         const getMenu = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/menu/")
+                const response = await axios.get("http://localhost:8080/menu/", {headers})
                 const nama = response.data.menu.map(res => res.nama_menu)
                 setCheckMenu(nama)
             } catch (err) {
@@ -50,7 +53,7 @@ export default function AddMenu() {
                 data.append('gambar', selectImage)
                 data.append('harga', addMenu.harga)
 
-                await axios.post("http://localhost:8080/menu/", data)
+                await axios.post("http://localhost:8080/menu/", data, {headers})
                 navigate("/menu")
             } catch (err) {
                 console.log(err)

@@ -12,8 +12,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const model = require('../models/index');
 const meja = model.meja
 
+const auth = require("../auth")
+
 //endpoint menampilkan semua data meja, method: GET, function: findAll()
-app.get("/", (req, res) => {
+app.get("/",auth, (req, res) => {
     meja.findAll()
         .then(result => {
             res.json({
@@ -28,7 +30,7 @@ app.get("/", (req, res) => {
 })
 
 //endpoint untuk melihat meja berdasarkan id
-app.get("/:id_meja", (req, res) => {
+app.get("/:id_meja",auth, (req, res) => {
     let param = { id_meja: req.params.id_meja }
 
     meja.findOne({ where: param })
@@ -45,7 +47,7 @@ app.get("/:id_meja", (req, res) => {
 })
 
 //endpoint untuk menyimpan data meja, METHOD: POST, function: create
-app.post("/", (req, res) => {
+app.post("/",auth, (req, res) => {
     let data = {
         nomor_meja: req.body.nomor_meja,
         status: req.body.status
@@ -65,7 +67,7 @@ app.post("/", (req, res) => {
 })
 
 //endpoint mengupdate data meja, METHOD: PUT, function:update
-app.put("/:id_meja", (req, res) => {
+app.put("/:id_meja",auth, (req, res) => {
     let param = {
         id_meja: req.params.id_meja
     }
@@ -87,7 +89,7 @@ app.put("/:id_meja", (req, res) => {
 })
 
 //endpoint menghapus data meja, METHOD: DELETE, function: destroy
-app.delete("/:id_meja", (req, res) => {
+app.delete("/:id_meja", auth, (req, res) => {
     let param = {
         id_meja: req.params.id_meja
     }
